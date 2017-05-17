@@ -41,7 +41,7 @@ describe('simple-redux-saga', function () {
     });
 
     it('makes a query', function () {
-      var generator = resourced.fetch({ desc: 'some description' });
+      var generator = resourced.fetch({ params: { desc: 'some description' } });
       var companiesResponseMock = { data: [{ name: 1 }] };
 
       (0, _chai.expect)(generator.next().value).to.deep.eql((0, _effects.put)({ type: 'COMPANIES_FETCH_START' }));

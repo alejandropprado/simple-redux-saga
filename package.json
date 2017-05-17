@@ -18,6 +18,7 @@
   },
   "scripts": {
     "tdd": "mocha --compilers js:babel-core/register --require babel-polyfill -R spec --watch",
+    "compile": "./node_modules/babel-cli/bin/babel.js src -d ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

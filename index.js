@@ -27,47 +27,48 @@ exports.default = function (_resource) {
   var resource = RESOURCE_PLURAL.toLowerCase();
 
   return {
-    fetch: regeneratorRuntime.mark(function fetch(params) {
-      var base, args, response;
+    fetch: regeneratorRuntime.mark(function fetch(opts) {
+      var params, base, args, response;
       return regeneratorRuntime.wrap(function fetch$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              params = opts ? opts.params : null;
+              _context.next = 3;
               return (0, _effects.put)({ type: RESOURCE_PLURAL + '_FETCH_START' });
 
-            case 2:
-              _context.prev = 2;
+            case 3:
+              _context.prev = 3;
               base = [_axios2.default.get, '/api/' + resource];
               args = params ? base.concat({ params: params }) : base;
-              _context.next = 7;
+              _context.next = 8;
               return _effects.call.apply(undefined, _toConsumableArray(args));
 
-            case 7:
+            case 8:
               response = _context.sent;
-              _context.next = 10;
+              _context.next = 11;
               return (0, _effects.put)({ type: RESOURCE_PLURAL + '_FETCH_SUCCEEDED', payload: response.data });
 
-            case 10:
-              _context.next = 16;
+            case 11:
+              _context.next = 17;
               break;
 
-            case 12:
-              _context.prev = 12;
-              _context.t0 = _context['catch'](2);
-              _context.next = 16;
+            case 13:
+              _context.prev = 13;
+              _context.t0 = _context['catch'](3);
+              _context.next = 17;
               return (0, _effects.put)({ type: RESOURCE_PLURAL + '_FETCH_FAILED', error: _context.t0 });
 
-            case 16:
-              _context.next = 18;
+            case 17:
+              _context.next = 19;
               return (0, _effects.put)({ type: RESOURCE_PLURAL + '_FETCH_FINALLY' });
 
-            case 18:
+            case 19:
             case 'end':
               return _context.stop();
           }
         }
-      }, fetch, this, [[2, 12]]);
+      }, fetch, this, [[3, 13]]);
     }),
     create: regeneratorRuntime.mark(function create(_ref) {
       var payload = _ref.payload;
