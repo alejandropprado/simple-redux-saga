@@ -11,7 +11,8 @@ export default _resource => {
   const resource = RESOURCE_PLURAL.toLowerCase()
 
   return {
-    fetch: function* fetch (params) {
+    fetch: function* fetch (opts) {
+      const params = opts ? opts.params : null
       yield put({ type: `${RESOURCE_PLURAL}_FETCH_START` })
       try {
         const base = [axios.get, `/api/${resource}`]

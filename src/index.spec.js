@@ -30,7 +30,7 @@ describe('simple-redux-saga', () => {
     })
 
     it('makes a query', () => {
-      const generator = resourced.fetch({ desc: 'some description' })
+      const generator = resourced.fetch({ params: { desc: 'some description' } })
       const companiesResponseMock = { data: [{ name: 1 }] }
 
       expect(generator.next().value).to.deep.eql(put({ type: 'COMPANIES_FETCH_START' }))
