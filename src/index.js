@@ -11,7 +11,7 @@ export default _resource => {
   const resource = RESOURCE_PLURAL.toLowerCase()
 
   return {
-    fetch: function* fetch (opts) {
+    fetch: function* fetch(opts) {
       const params = opts ? opts.params : null
       yield put({ type: `${RESOURCE_PLURAL}_FETCH_START` })
       try {
@@ -21,34 +21,52 @@ export default _resource => {
         yield put({ type: `${RESOURCE_PLURAL}_FETCH_SUCCEEDED`, payload: response.data })
       } catch (error) {
         yield put({ type: `${RESOURCE_PLURAL}_FETCH_FAILED`, error })
+      } finally {
+        yield put({ type: `${RESOURCE_PLURAL}_FETCH_FINALLY` })
       }
-      yield put({ type: `${RESOURCE_PLURAL}_FETCH_FINALLY` })
     },
-    create: function* create ({ payload }) {
+    create: function* create({ payload }) {
       yield put({ type: `${RESOURCE_SINGULAR}_CREATE_START`, payload })
       try {
         const response = yield call(axios.post, `/api/${resource}`, payload)
         yield put({ type: `${RESOURCE_SINGULAR}_CREATE_SUCCEEDED`, payload: Object.assign({}, payload, response.data) })
       } catch (error) {
         yield put({ type: `${RESOURCE_SINGULAR}_CREATE_FAILED`, error })
+      } finally {
+        yield put({ type: `${RESOURCE_SINGULAR}_CREATE_FINALLY` })
       }
     },
-    update: function*  update ({ payload }) {
+    creates: function* creates({ payload }) {
+      yield put({ type: `${RESOURCE_PLURAL}_CREATE_START`, payload })
+      try {
+        const response = yield call(axios.post, `/api/${resource}`, payload)
+        yield put({ type: `${RESOURCE_PLURAL}_CREATE_SUCCEEDED`, payload: Object.assign({}, payload, response.data) })
+      } catch (error) {
+        yield put({ type: `${RESOURCE_PLURAL}_CREATE_FAILED`, error })
+      } finally {
+        yield put({ type: `${RESOURCE_PLURAL}_CREATE_FINALLY` })
+      }
+    },
+    update: function* update({ payload }) {
       yield put({ type: `${RESOURCE_SINGULAR}_UPDATE_START`, payload })
       try {
         const response = yield call(axios.put, `/api/${resource}/${payload._id}`, _.omit(payload, ['_id']))
         yield put({ type: `${RESOURCE_SINGULAR}_UPDATE_SUCCEEDED`, payload: _.pick(payload, ['_id']) })
       } catch (error) {
         yield put({ type: `${RESOURCE_SINGULAR}_UPDATE_FAILED`, payload: { ..._.pick(payload, ['_id']), error } })
+      } finally {
+        yield put({ type: `${RESOURCE_SINGULAR}_UPDATE_FINALLY` })
       }
     },
-    destroy: function* destroy ({ payload }) {
+    destroy: function* destroy({ payload }) {
       yield put({ type: `${RESOURCE_SINGULAR}_DELETE_START`, payload })
       try {
         const response = yield call(axios.delete, `/api/${resource}/${payload._id}`)
         yield put({ type: `${RESOURCE_SINGULAR}_DELETE_SUCCEEDED`, payload: _.pick(payload, ['_id']) })
       } catch (error) {
         yield put({ type: `${RESOURCE_SINGULAR}_DELETE_FAILED`, payload: { ..._.pick(payload, ['_id']), error } })
+      } finally {
+        yield put({ type: `${RESOURCE_SINGULAR}_DELETE_FINALLY` })
       }
     }
   }
